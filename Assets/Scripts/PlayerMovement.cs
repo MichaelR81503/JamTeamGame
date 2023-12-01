@@ -11,33 +11,47 @@ public class PlayerMovement : MonoBehaviour
     public float speed;
     private float Move;
 
+    private Animator animator;
+
+    public AudioSource source;
+    public AudioClip clip;
+
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        var velocity = new Vector2(Move * speed, rb.velocity.y);
+
+        animator.SetFloat("Speed", velocity.magnitude);
+
         Move = Input.GetAxis("Horizontal");
 
-        rb.velocity = new Vector2(Move * speed, rb.velocity.y);
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))
+        {
+          source.PlayOneShot(clip);
+        }
+        
+        rb.velocity = velocity;
 
-
-
-     if (Input.GetKeyDown("space"))
-     {
-        rb.AddForce(new Vector2(rb.velocity.x, jump));
-     }
+         if (Input.GetKeyDown("space"))
+         {
+            rb.AddForce(new Vector2(rb.velocity.x, jump));
+         }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Death1")
         {
-            SceneManager.LoadScene(0);
+            transform.position = new Vector2(-1, 6.5f);
         }
         if (other.tag == "NextLvl")
         {
