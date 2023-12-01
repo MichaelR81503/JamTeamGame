@@ -57,5 +57,13 @@ public class PlayerMovement : MonoBehaviour
         {
             SceneManager.LoadScene(1);
         }
+        if (other.tag == "Death2")
+        {
+            transform.position = new Vector2(2.44f, -3.52f);
+        }
+        if (other.tag == "Win")
+        {
+            SceneManager.LoadScene(2);
+        }
     }
 }
